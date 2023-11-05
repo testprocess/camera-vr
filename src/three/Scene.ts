@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+
 
 class Scene {
     scene: any
@@ -46,7 +48,12 @@ class Scene {
         hemiLight.position.set( 0, 120, 0 );
         this.scene.add(hemiLight);
 
+        document.body.appendChild( VRButton.createButton( this.renderer ) );
 
+        this.renderer.xr.enabled = true;
+        this.renderer.setAnimationLoop( () => {
+            this.renderer.render( this.scene, this.camera );
+        });
         
         this.animate();
         this.addSphere()
