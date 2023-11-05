@@ -39,25 +39,31 @@ class Scene {
         dirLight.shadow.camera.bottom = -150;
         dirLight.shadow.camera.left = -150;
         dirLight.castShadow = true;
-    
-    
+
         this.scene.add(dirLight);
         
         const hemiLight = new THREE.HemisphereLight( 0x707070, 0x444444 );
         hemiLight.position.set( 0, 120, 0 );
         this.scene.add(hemiLight);
-        
-        const mesh = new THREE.Mesh( new THREE.PlaneGeometry( 100, 100 ),new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: true} ) );
-        mesh.rotation.x = - Math.PI / 2;
-        mesh.receiveShadow = true;
-        this.scene.add(mesh);
-    
-    
-    
-        const helper = new THREE.CameraHelper( dirLight.shadow.camera );
-        this.scene.add( helper );
+
+
         
         this.animate();
+        this.addSphere()
+    }
+
+    addSphere() {
+        const geometry = new THREE.SphereGeometry( 10, 32, 16 ); 
+        const loader  = new THREE.TextureLoader()
+        // const texture = loader.load( "https://cdn.pixabay.com/photo/2023/10/23/17/25/hike-8336525_1280.jpg" );
+
+        const video: any = document.getElementById( 'video' );
+        const texture = new THREE.VideoTexture( video );
+
+        const material = new THREE.MeshBasicMaterial( { map: texture } ); 
+        const sphere = new THREE.Mesh( geometry, material ); 
+        sphere.material.side = THREE.BackSide;
+        this.scene.add( sphere );
     }
 
     animate() {
