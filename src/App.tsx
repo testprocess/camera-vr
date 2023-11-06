@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CameraButton } from './components/Camera';
+
+
 
 import './App.css'
 
 
-const App: any = () => {
+const App: any = ({ socket }: any) => {
+
+
     return (
         <div>
 
-            <CameraButton></CameraButton>
+            <CameraButton socket={socket}></CameraButton>
 
         </div>
     );

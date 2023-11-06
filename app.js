@@ -30,12 +30,14 @@ async function startDevelopment() {
     };
 
     const server = https.createServer(options, app);
-    console.log("[ + ] enable socket io")
-    let io_server = await startSocketServer(server);
 
-    server.listen(port, () => {
-      console.log("HTTPS server listening on port " + port);
+    const serverListen = server.listen(port, () => {
+      console.log("[ + ] HTTPS server listening on port " + port);
     });
+
+    console.log("[ + ] enable socket io")
+    let io_server = await startSocketServer(serverListen);
+
 }
 
 async function startProduction() {

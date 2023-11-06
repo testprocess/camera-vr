@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { VRButton } from './VRButton';
+import { Socket } from 'socket.io';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 
 class Scene {
@@ -8,9 +10,11 @@ class Scene {
     renderer: any
     controls: any
     blocks: any
+    socket: Socket<DefaultEventsMap, DefaultEventsMap>;
+    peerConnection: RTCPeerConnection;
 
-    constructor() {
-
+    constructor({ socket }: { socket: any}) {
+        this.socket = socket
         this.init()
     }
 
@@ -57,6 +61,38 @@ class Scene {
         
         this.animate();
         this.addSphere()
+        document.querySelector("#VRButton").addEventListener("click", () => {
+            this.peer()
+
+        })
+    }
+
+    peer() {
+
+        this.socket.on("messageoffer", async (message) => {
+            const remoteVideo: any = document.querySelector("#video")
+            const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]}
+            this.peerConnection = new RTCPeerConnection(configuration);
+
+            this.peerConnection.onicecandidate = e => {
+                this.socket.emit("newIceCandidate", e.candidate)
+            };
+
+            this.peerConnection.ontrack = e => remoteVideo.srcObject = e.streams[0];
+            this.peerConnection.setRemoteDescription(new RTCSessionDescription(message));
+            const answer = await this.peerConnection.createAnswer();
+            await this.peerConnection.setLocalDescription(answer);
+            this.socket.emit("answer", answer)
+
+        })
+
+        this.socket.on("iceCandidate", async (message) => {
+            try {
+                await this.peerConnection.addIceCandidate(message);
+            } catch (e) {
+                console.error('Error adding received ice candidate', e);
+            }
+        })
     }
 
     addSphere() {
