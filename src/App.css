@@ -21,13 +21,10 @@ html, body {
     opacity: 100%;
     z-index: 99999;
     width: 100%;
-
   }
   100% {
     opacity: 0%;
     z-index: 99999;
     width: 100%;
-
-
   }
 }

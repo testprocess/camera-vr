@@ -68,8 +68,7 @@ class VRButton {
 
 			button.style.display = '';
 
-			button.style.cursor = 'auto';
-			button.style.left = 'calc(50% - 75px)';
+
 
 			button.onmouseenter = null;
 			button.onmouseleave = null;
@@ -138,18 +137,21 @@ class VRButton {
 			return button;
 
 		} else {
+			button.id = 'VRButton';
 
 			const message = document.createElement( 'a' );
-
+			stylizeElement( button );
 			if ( window.isSecureContext === false ) {
 
 				message.href = document.location.href.replace( /^http:/, 'https:' );
 				message.innerHTML = 'WEBXR NEEDS HTTPS'; // TODO Improve message
+                button.textContent = 'WEBXR NEEDS HTTPS';
+
 
 			} else {
 
-				message.href = 'https://immersiveweb.dev/';
 				message.innerHTML = 'WEBXR NOT AVAILABLE';
+                button.textContent = 'WEBXR NOT AVAILABLE';
 
 			}
 
@@ -157,7 +159,7 @@ class VRButton {
 
 			stylizeElement( message );
 
-			return message;
+			return button;
 
 		}
 

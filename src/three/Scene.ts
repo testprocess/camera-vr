@@ -5,20 +5,18 @@ import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 
 class Scene {
-    scene: any
-    camera: any
-    renderer: any
-    controls: any
-    blocks: any
+    scene: THREE.Scene
+    camera: THREE.PerspectiveCamera
+    renderer: THREE.WebGLRenderer
     socket: Socket<DefaultEventsMap, DefaultEventsMap>;
     peerConnection: RTCPeerConnection;
 
-    constructor({ socket }: { socket: any}) {
+    constructor({ socket }: { socket: any }) {
         this.socket = socket
         this.init()
     }
 
-    async init() {
+    private async init() {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color( 0x000000 );
         this.scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
@@ -64,25 +62,21 @@ class Scene {
         document.querySelector("#VRButton").addEventListener("click", this.handleClickVRButton.bind(this))
     }
 
-    handleClickVRButton() {
-        const button: any = document.querySelector("#VRButton")
+    private handleClickVRButton() {
+        const button: HTMLBaseElement = document.querySelector("#VRButton")
         button.style.animationName = 'expendWidth'
         button.style.animationDuration = '1s'
         button.style.animationFillMode = 'forwards'
 
         setTimeout(() => {
-            this.peer()
-
-            
-
+            this.setPeer()
             button.style.animationName = 'fadeOut'
             button.style.animationDuration = '1s'
             button.style.animationFillMode = 'forwards'
-
         }, 1000);
     }
 
-    peer() {
+    private setPeer() {
 
         this.socket.on("messageoffer", async (message) => {
             const remoteVideo: any = document.querySelector("#video")
@@ -110,11 +104,8 @@ class Scene {
         })
     }
 
-    addSphere() {
+    private addSphere() {
         const geometry = new THREE.SphereGeometry( 10, 32, 16 ); 
-        const loader  = new THREE.TextureLoader()
-        // const texture = loader.load( "https://cdn.pixabay.com/photo/2023/10/23/17/25/hike-8336525_1280.jpg" );
-
         const video: any = document.getElementById( 'video' );
         const texture = new THREE.VideoTexture( video );
 
@@ -124,7 +115,7 @@ class Scene {
         this.scene.add( sphere );
     }
 
-    animate() {
+    private animate() {
         requestAnimationFrame( this.animate.bind(this) );
 
         this.renderer.render( this.scene, this.camera );

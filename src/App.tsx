@@ -7,13 +7,9 @@ import './App.css'
 
 
 const App: any = ({ socket }: any) => {
-
-
     return (
         <div>
-
             <CameraButton socket={socket}></CameraButton>
-
         </div>
     );
 };

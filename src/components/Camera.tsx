@@ -24,7 +24,6 @@ const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, Defau
             const stream = await openMediaDevices({'video':true,'audio':false});
             video.srcObject = stream
             await makeCall(stream)
-            console.log('Got MediaStream:', stream);
         } catch(error) {
             console.error('Error accessing media devices.', error);
         }
