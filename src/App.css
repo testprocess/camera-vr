@@ -2,7 +2,11 @@ html, body {
     padding: 0%;
     margin: 0px;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 }
+
+video{ transform: rotateY(180deg); -webkit-transform:rotateY(180deg); /* Safari and Chrome */ -moz-transform:rotateY(180deg); /* Firefox */ }
 
 @-webkit-keyframes expendWidth {
   0% {

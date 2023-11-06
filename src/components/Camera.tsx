@@ -21,7 +21,7 @@ const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, Defau
 
         try {
             const video: any = document.querySelector("#video")
-            const stream = await openMediaDevices({'video':true,'audio':false});
+            const stream = await openMediaDevices({'video': { width: 1920, height: 1080, facingMode: "environment" },'audio':false});
             video.srcObject = stream
             await makeCall(stream)
         } catch(error) {

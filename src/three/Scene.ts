@@ -53,11 +53,12 @@ class Scene {
         document.body.appendChild( VRButton.createButton( this.renderer ) );
 
         this.renderer.xr.enabled = true;
+        this.renderer.xr.cameraAutoUpdate = true
         this.renderer.setAnimationLoop( () => {
+            
             this.renderer.render( this.scene, this.camera );
         });
         
-        this.animate();
         this.addSphere()
         document.querySelector("#VRButton").addEventListener("click", this.handleClickVRButton.bind(this))
     }
@@ -106,14 +107,22 @@ class Scene {
 
     private addSphere() {
         const geometry = new THREE.SphereGeometry( 10, 32, 16 ); 
-        const video: any = document.getElementById( 'video' );
+        const video: any = document.getElementById( 'video' );        
         const texture = new THREE.VideoTexture( video );
 
+        texture.center = new THREE.Vector2(0.5, 0.5);
+        texture.rotation = Math.PI;
+        texture.flipY = false;
         const material = new THREE.MeshBasicMaterial( { map: texture } ); 
+
         const sphere = new THREE.Mesh( geometry, material ); 
         sphere.material.side = THREE.BackSide;
         this.scene.add( sphere );
+
+
     }
+
+
 
     private animate() {
         requestAnimationFrame( this.animate.bind(this) );
