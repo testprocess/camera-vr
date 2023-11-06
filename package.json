@@ -35,6 +35,7 @@
     "html-webpack-plugin": "^5.5.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "socket.io": "^4.7.2",
     "style-loader": "3.3.3",
     "three": "0.153.0",
     "webpack": "5.86.0"
