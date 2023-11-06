@@ -3,3 +3,31 @@ html, body {
     margin: 0px;
     overflow: hidden;
 }
+
+@-webkit-keyframes expendWidth {
+  0% {
+    width: 50%;
+    z-index: 99999;
+  }
+  100% {
+    width: 100%;
+    z-index: 99999;
+
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 100%;
+    z-index: 99999;
+    width: 100%;
+
+  }
+  100% {
+    opacity: 0%;
+    z-index: 99999;
+    width: 100%;
+
+
+  }
+}

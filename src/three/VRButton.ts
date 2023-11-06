@@ -24,7 +24,7 @@ class VRButton {
 
 				currentSession.removeEventListener( 'end', onSessionEnded );
 
-				button.textContent = 'ENTER VR';
+				button.textContent = 'Enter VR';
 
 				currentSession = null;
 
@@ -35,9 +35,8 @@ class VRButton {
 			button.style.display = '';
 
 			button.style.cursor = 'pointer';
-			button.style.top = '50%';
 
-			button.textContent = 'ENTER VR';
+			button.textContent = 'Enter VR';
 
 
 
@@ -100,18 +99,20 @@ class VRButton {
 		function stylizeElement( element: any ) {
 
 			element.style.position = 'absolute';
-			element.style.bottom = '20px';
-			element.style.padding = '8rem 5rem';
-			element.style.border = '1px solid #fff';
-			element.style.borderRadius = '1rem';
-			element.style.background = '#ffffff';
-			element.style.color = '#000';
+
+			element.style.background = '#ECE3CE';
+			element.style.color = '#3A4D39';
 			element.style.textAlign = 'center';
 
 			element.style.outline = 'none';
 			element.style.zIndex = '999';
-            element.style.left = '4rem'
-            element.style.transform = 'translateY(-50%)'
+            element.style.border = 'none';
+
+            element.style.fontSize = '1.4rem';
+
+
+            element.style.width = "50%"
+            element.style.height = "100%"
 
 		}
 
@@ -152,7 +153,6 @@ class VRButton {
 
 			}
 
-			message.style.top = '50%';
 			message.style.textDecoration = 'none';
 
 			stylizeElement( message );

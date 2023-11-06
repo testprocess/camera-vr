@@ -1,15 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import io, { Socket as SocketClient } from "socket.io-client";
 import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 
 const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, DefaultEventsMap>}) => {
+    const [animationName, setAnimationName] = useState("")
     const openMediaDevices = async (constraints: any) => {
         return await navigator.mediaDevices.getUserMedia(constraints);
     }
 
 
     const handleClickButton = async () => {
+        setAnimationName("expendWidth")
+        const VRButton: any = document.querySelector("#VRButton")
+
+        setTimeout(() => {
+            setAnimationName("fadeOut")
+            VRButton.style.opacity = '0%'
+        }, 1000)
 
         try {
             const video: any = document.querySelector("#video")
@@ -63,7 +71,7 @@ const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, Defau
 
 
     return (
-        <button onClick={handleClickButton} style={{ padding: "8rem 5rem", backgroundColor: "#ffffff", position: "absolute", zIndex: "999", cursor: "pointer", borderRadius: "1rem", right: "4rem", top: "50%", transform: "translateY(-50%)", bottom: "20px", border: "none" }}>
+        <button onClick={handleClickButton} style={{ backgroundColor: "#4F6F52", color: "#ECE3CE", fontSize: "1.4rem", position: "absolute", zIndex: "999", cursor: "pointer", width: "50%", height: "100%", right: "0", border: "none", animationName: animationName, animationDuration: '1s', animationFillMode: "forwards" }}>
 
             Camera Mode
 

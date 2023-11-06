@@ -61,10 +61,25 @@ class Scene {
         
         this.animate();
         this.addSphere()
-        document.querySelector("#VRButton").addEventListener("click", () => {
+        document.querySelector("#VRButton").addEventListener("click", this.handleClickVRButton.bind(this))
+    }
+
+    handleClickVRButton() {
+        const button: any = document.querySelector("#VRButton")
+        button.style.animationName = 'expendWidth'
+        button.style.animationDuration = '1s'
+        button.style.animationFillMode = 'forwards'
+
+        setTimeout(() => {
             this.peer()
 
-        })
+            
+
+            button.style.animationName = 'fadeOut'
+            button.style.animationDuration = '1s'
+            button.style.animationFillMode = 'forwards'
+
+        }, 1000);
     }
 
     peer() {
