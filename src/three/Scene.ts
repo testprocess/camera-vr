@@ -26,7 +26,7 @@ class Scene {
     
         
         this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 100 );
-        this.camera.position.set( 0, 3, 7 );
+        this.camera.position.set( 0, 1, 0 );
         this.scene.add(this.camera);
     
     
@@ -55,9 +55,11 @@ class Scene {
         this.renderer.xr.enabled = true;
         this.renderer.xr.cameraAutoUpdate = true
         this.renderer.setAnimationLoop( () => {
-            
+
+
             this.renderer.render( this.scene, this.camera );
         });
+
         
         this.addSphere()
         document.querySelector("#VRButton").addEventListener("click", this.handleClickVRButton.bind(this))
@@ -117,6 +119,7 @@ class Scene {
 
         const sphere = new THREE.Mesh( geometry, material ); 
         sphere.material.side = THREE.BackSide;
+        sphere.rotation.y = Math.PI/2
         this.scene.add( sphere );
 
 
