@@ -40,7 +40,6 @@ const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, Defau
         socket.emit("offer", offer)
 
         peerConnection.addEventListener('icecandidate', event => {
-            console.log("icecandidateicecandidateicecandidate")
             if (event.candidate) {
                 socket.emit("newIceCandidate", event.candidate)
             }
@@ -48,7 +47,7 @@ const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, Defau
 
         peerConnection.addEventListener('connectionstatechange', event => {
             if (peerConnection.connectionState === 'connected') {
-                console.log("CCCCCCCCCC")
+                console.log("connected")
             }
         });
 
@@ -61,7 +60,6 @@ const CameraButton = ({ socket }: { socket: SocketClient<DefaultEventsMap, Defau
         })
 
         socket.on("message", async (message) => {
-            console.log(message)
             const remoteDesc = new RTCSessionDescription(message);
             await peerConnection.setRemoteDescription(remoteDesc);
         })

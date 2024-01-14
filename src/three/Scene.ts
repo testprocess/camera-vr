@@ -10,6 +10,9 @@ class Scene {
     renderer: THREE.WebGLRenderer
     socket: Socket<DefaultEventsMap, DefaultEventsMap>;
     peerConnection: RTCPeerConnection;
+    root: THREE.Object3D<THREE.Event>;
+    sphere: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>;
+    screen: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial>;
 
     constructor({ socket }: { socket: any }) {
         this.socket = socket
@@ -19,15 +22,17 @@ class Scene {
     private async init() {
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color( 0x000000 );
-        this.scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
+        // this.scene.fog = new THREE.Fog( 0xa0a0a0, 10, 50 );
     
         const clock = new THREE.Clock();
     
+        this.root = new THREE.Object3D();
+        this.scene.add( this.root );
     
         
-        this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 100 );
+        this.camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 1, 100000 );
         this.camera.position.set( 0, 1, 0 );
-        this.scene.add(this.camera);
+        this.root.add(this.camera);
     
     
         this.renderer = new THREE.WebGLRenderer();
@@ -53,15 +58,23 @@ class Scene {
         document.body.appendChild( VRButton.createButton( this.renderer ) );
 
         this.renderer.xr.enabled = true;
+        this.renderer.xr.setReferenceSpaceType( 'local' );
+
+
         this.renderer.xr.cameraAutoUpdate = true
         this.renderer.setAnimationLoop( () => {
+            const controller = this.renderer.xr.getController(0); 
 
+            this.screen.rotation.x = controller.rotation.x
+            this.screen.rotation.y = controller.rotation.y
+            this.screen.rotation.z = controller.rotation.z
 
             this.renderer.render( this.scene, this.camera );
         });
 
         
-        this.addSphere()
+        // this.addSphere()
+        this.addScreen()
         document.querySelector("#VRButton").addEventListener("click", this.handleClickVRButton.bind(this))
     }
 
@@ -117,15 +130,30 @@ class Scene {
         texture.flipY = false;
         const material = new THREE.MeshBasicMaterial( { map: texture } ); 
 
-        const sphere = new THREE.Mesh( geometry, material ); 
-        sphere.material.side = THREE.BackSide;
-        sphere.rotation.y = Math.PI/2
-        this.scene.add( sphere );
+        this.sphere = new THREE.Mesh( geometry, material ); 
+        this.sphere.material.side = THREE.BackSide;
+        this.sphere.rotation.y = Math.PI/2
+        this.scene.add( this.sphere );
 
 
     }
 
+    private addScreen() {
+        const geometry = new THREE.BoxGeometry( 2000, 2000, 2000 ); 
+        const video: any = document.getElementById( 'video' );        
+        const texture = new THREE.VideoTexture( video );
 
+        texture.center = new THREE.Vector2(0.5, 0.5);
+        texture.rotation = Math.PI;
+        texture.flipY = false;
+        const material = new THREE.MeshBasicMaterial( { map: texture } ); 
+
+        this.screen = new THREE.Mesh( geometry, material ); 
+        this.screen.material.side = THREE.BackSide;
+        this.scene.add( this.screen );
+
+
+    }
 
     private animate() {
         requestAnimationFrame( this.animate.bind(this) );
